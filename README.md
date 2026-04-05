@@ -1,0 +1,1 @@
+This is a Java-based Library Management System that allows users to manage books, issue and return books, and maintain records of library activities. It is designed to demonstrate object-oriented programming concepts and basic database integration.
