@@ -1,0 +1,3 @@
+javac -cp ".;ojdbc14.jar" *.java
+
+java -cp ".;ojdbc14.jar" Start
