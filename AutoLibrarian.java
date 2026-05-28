@@ -2,7 +2,7 @@ import java.sql.*;
 
 public class AutoLibrarian {
 
-    private Book[] books = new Book[50];
+    private Book[] book = new Book[50];
     private int count = 0;
 
     public AutoLibrarian() {
@@ -15,21 +15,23 @@ public class AutoLibrarian {
 
             Connection con = DBConnection.getConnection();
 
-            String query = "INSERT INTO BOOK VALUES (?, ?, ?, ?)";
+            String query = "INSERT INTO BOOK VALUES (BOOK_SEQ.NEXTVAL, ?, ?, ?)";
 
             PreparedStatement ps = con.prepareStatement(query);
 
-            ps.setInt(1, (int) (Math.random() * 1000));
+            ps.setString(1, title);
 
-            ps.setString(2, title);
+            ps.setString(2, author);
 
-            ps.setString(3, author);
-
-            ps.setInt(4, 1);
+            ps.setInt(3, 1);
 
             ps.executeUpdate();
 
             con.close();
+
+            loadFromDatabase();
+
+            System.out.println("Book Added Successfully");
 
         } catch (Exception e) {
 
@@ -43,9 +45,11 @@ public class AutoLibrarian {
 
     public String removeBookById(int id) {
 
+        loadFromDatabase();
+
         for (int i = 0; i < count; i++) {
 
-            if (books[i].getId() == id) {
+            if (book[i].getId() == id) {
 
                 try {
 
@@ -68,10 +72,10 @@ public class AutoLibrarian {
 
                 // Remove from array
                 for (int j = i; j < count - 1; j++) {
-                    books[j] = books[j + 1];
+                    book[j] = book[j + 1];
                 }
 
-                books[count - 1] = null;
+                book[count - 1] = null;
 
                 count--;
 
@@ -88,19 +92,21 @@ public class AutoLibrarian {
 
     public String issueBookById(int id, Member member) {
 
+        loadFromDatabase();
+
         if (!member.canIssue()) {
             return "Issue limit reached (Max 3 books)";
         }
 
         for (int i = 0; i < count; i++) {
 
-            if (books[i].getId() == id) {
+            if (book[i].getId() == id) {
 
-                if (!books[i].isAvailable()) {
+                if (!book[i].isAvailable()) {
                     return "Book is not available";
                 }
 
-                books[i].issue();
+                book[i].issue();
 
                 member.issueBook();
 
@@ -136,11 +142,13 @@ public class AutoLibrarian {
 
     public String returnBookById(int id, Member member) {
 
+        loadFromDatabase();
+
         for (int i = 0; i < count; i++) {
 
-            if (books[i].getId() == id) {
+            if (book[i].getId() == id) {
 
-                books[i].returned();
+                book[i].returned();
 
                 member.returnBook();
 
@@ -178,7 +186,7 @@ public class AutoLibrarian {
 
             Connection con = DBConnection.getConnection();
 
-            String query = "SELECT * FROM BOOK WHERE STATUS=1";
+            String query = "SELECT * FROM BOOK WHERE AVAILABLE = 1";
 
             Statement st = con.createStatement();
 
@@ -186,15 +194,9 @@ public class AutoLibrarian {
 
             while (rs.next()) {
 
-                result += "ID: " +
-                        rs.getInt("BOOK_ID") +
-
-                        " | Title: " +
-                        rs.getString("TITLE") +
-
-                        " | Author: " +
-                        rs.getString("AUTHOR") +
-
+                result += "ID: " + rs.getInt("ID") +
+                        " | Title: " + rs.getString("TITLE") +
+                        " | Author: " + rs.getString("AUTHOR") +
                         "\n";
             }
 
@@ -212,7 +214,6 @@ public class AutoLibrarian {
 
         return result;
     }
-
     // =========================
     // LOAD FROM DATABASE
     // =========================
@@ -239,7 +240,7 @@ public class AutoLibrarian {
 
                 boolean available = rs.getInt("AVAILABLE") == 1;
 
-                books[count++] = new Book(
+                book[count++] = new Book(
                         id,
                         title,
                         author,
