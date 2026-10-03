@@ -31,7 +31,6 @@ The system was designed class-first (class diagram, then responsibilities and me
 - **Automated librarian:** `AutoLibrarian` handles library operations automatically <!-- TODO: describe exactly what AutoLibrarian does -->
 - **Menu-driven interface:** simple console flow launched from `Start.java`
 
-> Edit this list so it matches exactly what your program does. Delete anything that isn't implemented and add anything that is missing.
 
 #OOP Concepts Demonstrated
 
@@ -47,7 +46,6 @@ The system was designed class-first (class diagram, then responsibilities and me
 
 # Project Structure
 
-```
 Library-Management-System/
 ├── Start.java            # Entry point, main menu
 ├── Library.java          # Core logic: books, members, issue/return
@@ -60,11 +58,10 @@ Library-Management-System/
 ├── Run Commands          # Compile and run instructions
 ├── logo.png
 └── README.md
-```
+
 
 ## Class Design
 
-```
         Person
           ▲
           │ extends
@@ -75,14 +72,13 @@ Library-Management-System/
       └──── manages ───▶ Member
 
    Library ──── uses ───▶ DBconnectiion
-``` 
+
 ===== Library Management System =====
 1. Add Book
 2. Register Member
 3. Issue Book
 4. Return Book
 5. Exit
-```
 
 ## Development Journey
 
