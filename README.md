@@ -44,7 +44,6 @@ The system was designed class-first (class diagram, then responsibilities and me
 | **Composition / Association** | `Library` manages collections of `Book` and `Member` objects |
 | **Separation of concerns** | Database logic is isolated in `DBconnectiion.java` |
 
-> Verify the table against your code before publishing. Examiners and recruiters will check.
 
 # Project Structure
 
